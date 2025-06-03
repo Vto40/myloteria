@@ -1,0 +1,1 @@
+npm install axios bcrypt bcryptjs chart.js cors dotenv express html2canvas jsonwebtoken jspdf mongodb mongoose multer nodemailer react-chartjs-2 react-icons
