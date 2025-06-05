@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth'); // Importa las rutas de autenticaci
 const usuariosRoutes = require('./routes/usuarios'); // Importa las rutas de usuarios
 const intercambiosRoutes = require('./routes/intercambios'); // Importa las rutas de intercambio
 const valoracionesRouter = require('./routes/valoraciones');
+const anunciosRoutes = require('./routes/anuncios'); // Importa las rutas de anuncios
 
 dotenv.config();  // Configura las variables de entorno
 
@@ -28,8 +29,11 @@ app.use('/api/usuarios', usuariosRoutes); // Registra las rutas de usuarios
 // Rutas de intercambio
 app.use('/api', intercambiosRoutes); // Usa las rutas de intercambio
 
-//Rustas de valoraciones
+// Rutas de valoraciones
 app.use('/api/valoraciones', valoracionesRouter); // Registra las rutas de valoraciones
+
+// Rutas de anuncios
+app.use('/api/anuncios', anunciosRoutes); // Registra las rutas de anuncios
 
 // Conexión a la base de datos
 mongoose.connect(process.env.MONGODB_URI, {

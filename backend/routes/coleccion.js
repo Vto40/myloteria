@@ -2,7 +2,12 @@
 const express = require('express');
 const verificarToken = require('../middleware/verificarToken');
 const Numero = require('../models/numero'); // Importa el modelo Numero
+const Usuario = require('../models/usuario');
+const enviarCorreo = require('../utils/mailer');
 const router = express.Router();
+
+// Cambia este valor por el total real de números posibles en la colección
+const TOTAL_NUMEROS = 100000;
 
 router.get('/', verificarToken, async (req, res) => {
   try {
@@ -33,11 +38,56 @@ router.post('/', verificarToken, async (req, res) => {
     // Crear un nuevo número y guardarlo en la base de datos
     const nuevoNumero = new Numero({
       numero: numerostr,
-      intercambio: false, // Inicialmente no está disponible para intercambio
-      propietario: req.usuario.id, // Asocia el número al usuario autenticado
+      intercambio: false,
+      propietario: req.usuario.id,
     });
 
     await nuevoNumero.save();
+
+    // Obtener usuario y progreso
+    const usuario = await Usuario.findById(req.usuario.id);
+    const totalNumeros = await Numero.countDocuments({ propietario: req.usuario.id });
+    const porcentaje = Math.floor((totalNumeros / TOTAL_NUMEROS) * 100);
+
+    let hitoAlcanzado = null;
+    let hitoClave = null;
+
+    // Hito especial: 100 números
+    if (totalNumeros === 100 && !usuario.hitosNotificados.includes(100)) {
+      hitoAlcanzado = `¡Felicidades ${usuario.nombre}! Has alcanzado 100 números en tu colección de Lotería.`;
+      hitoClave = 100;
+    }
+
+    // Hito especial: 1000 números
+    else if (totalNumeros === 1000 && !usuario.hitosNotificados.includes(1000)) {
+      hitoAlcanzado = `¡Felicidades ${usuario.nombre}! Has alcanzado 1000 números en tu colección de Lotería.`;
+      hitoClave = 1000;
+    }
+
+    // Hitos de porcentaje múltiplo de 10% (10%, 20%, ..., 100%)
+    else if (porcentaje > 0 && porcentaje % 10 === 0 && !usuario.hitosNotificados.includes(porcentaje)) {
+      hitoAlcanzado = `¡Felicidades ${usuario.nombre}! Has completado el ${porcentaje}% de tu colección de números en Lotería.`;
+      hitoClave = porcentaje;
+    }
+
+    // Envía el correo y agrega al log si corresponde y marca el hito como notificado
+    if (hitoAlcanzado && hitoClave !== null) {
+      await enviarCorreo(
+        usuario.correo,
+        '¡Nuevo logro en tu colección!',
+        hitoAlcanzado
+      );
+      usuario.hitosNotificados.push(hitoClave);
+      await usuario.save();
+
+      // Registrar en el log
+      const Log = require('../models/log');
+      await Log.create({
+        usuario: usuario._id,
+        tipo: 'logro_coleccion',
+        descripcion: `Logro alcanzado: ${hitoAlcanzado}`
+      });
+    }
 
     res.status(201).json({ mensaje: 'Número añadido con éxito', numero: nuevoNumero });
   } catch (error) {

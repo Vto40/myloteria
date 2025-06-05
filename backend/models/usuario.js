@@ -34,6 +34,10 @@ const usuarioSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // Fecha de registro automática
   },
+  hitosNotificados: {
+    type: [Number],
+    default: []
+  },
 });
 
 // Middleware para hashear la contraseña solo si es nueva o modificada

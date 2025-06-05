@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuario');
+const Log = require('../models/log');
 
 const router = express.Router();
 
@@ -47,13 +48,36 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ mensaje: 'Correo o contraseña incorrectos' });
     }
 
+    // Nueva verificación: ¿está baneado?
+    if (usuario.baneado) {
+      return res.status(403).json({ mensaje: 'Tu cuenta ha sido baneada. Ponte en contacto con administración.' });
+    }
+
     const esValido = await bcrypt.compare(contraseña, usuario.contraseña);
     if (!esValido) {
       return res.status(400).json({ mensaje: 'Correo o contraseña incorrectos' });
     }
 
+    // Si pasa el login:
     const token = jwt.sign({ id: usuario._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+
+    // Registrar log de inicio de sesión
+    await Log.create({
+      usuario: usuario._id,
+      tipo: 'login',
+      descripcion: 'Inicio de sesión exitoso'
+    });
+
+    res.json({
+      token,
+      usuario: {
+        _id: usuario._id,
+        nombre: usuario.nombre,
+        correo: usuario.correo,
+        esAdministrador: usuario.esAdministrador,
+        baneado: usuario.baneado
+      }
+    });
   } catch (error) {
     console.error('Error al iniciar sesión:', error);
     res.status(500).json({ mensaje: 'Error interno del servidor' });

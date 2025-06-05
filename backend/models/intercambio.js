@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 
 const intercambioSchema = new mongoose.Schema({
-  decimo_Ofertado: {
-    type: String,
-    required: true,
-  },
-  decimo_Solicitado: {
-    type: String,
-    required: true,
-  },
   usuario_Origen: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario',
@@ -17,20 +9,25 @@ const intercambioSchema = new mongoose.Schema({
   usuario_Destino: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario',
-    required: false,
+    required: true,
   },
-  fecha_oferta: {
-    type: Date,
-    default: Date.now,
+  decimo_Ofertado: {
+    type: String,
+    required: true,
   },
-  fecha_realizacion: {
-    type: Date,
-    required: false,
+  decimo_Solicitado: {
+    type: String,
+    required: true,
   },
   estado: {
     type: String,
     default: 'solicitada',
     enum: ['solicitada', 'aceptada', 'rechazada', 'cancelada'],
+  },
+  // Campo de fecha de creación
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
