@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../services/api';
 
 const Nav = ({ token, setToken }) => {
     const navigate = useNavigate();
+    const [esAdmin, setEsAdmin] = useState(false);
+
+    useEffect(() => {
+        const fetchPerfil = async () => {
+            if (!token) {
+                setEsAdmin(false);
+                return;
+            }
+            try {
+                const res = await api.get('/usuarios/perfil', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setEsAdmin(res.data.esAdministrador === true); // <- así se llama en la base de datos
+            } catch {
+                setEsAdmin(false);
+            }
+        };
+        fetchPerfil();
+    }, [token]);
 
     const handleLogout = () => {
         localStorage.removeItem('token'); // Elimina el token del almacenamiento local
@@ -53,6 +73,13 @@ const Nav = ({ token, setToken }) => {
                                 Mis Ofertas de Intercambio
                             </a>
                         </li>
+                        {esAdmin && (
+                            <li>
+                                <Link to="/administrador" style={{ color: '#ffb300', textDecoration: 'none', fontWeight: 'bold' }}>
+                                    Administración
+                                </Link>
+                            </li>
+                        )}
                         <li>
                             <button
                                 onClick={handleLogout}

@@ -367,21 +367,13 @@ const Collection = () => {
           marginBottom: '20px',
         }}
       >
-        <div style={{ width: '20%' }}>
-          <h4 style={{ textAlign: 'center' }}>Estado Total</h4>
-          <Pie data={dataEstadoTotal} />
+        <div style={{ width: 200, minWidth: 0 }}>
+          <h4 style={{ textAlign: 'center', fontSize: 15 }}>Estado Total</h4>
+          <Pie data={dataEstadoTotal} options={{ maintainAspectRatio: false, responsive: false }} width={200} height={200} />
         </div>
-        <div style={{ width: '20%' }}>
-          <h4 style={{ textAlign: 'center' }}>Capicúas</h4>
-          <Pie data={dataCapicuas} />
-        </div>
-        <div style={{ width: '20%' }}>
-          <h4 style={{ textAlign: 'center' }}>Pares e Impares</h4>
-          <Pie data={dataPares} />
-        </div>
-        <div style={{ width: '20%' }}>
-          <h4 style={{ textAlign: 'center' }}>Total de Números</h4>
-          <Doughnut data={dataTotalNumeros} />
+        <div style={{ width: 200, minWidth: 0 }}>
+          <h4 style={{ textAlign: 'center', fontSize: 15 }}>Total de Números</h4>
+          <Doughnut data={dataTotalNumeros} options={{ maintainAspectRatio: false, responsive: false }} width={200} height={200} />
         </div>
       </div>
 
@@ -490,15 +482,16 @@ const Collection = () => {
             </div>
             {/* Gráficos agregados al informe */}
             <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 20, gap: 20 }}>
-              <div style={{ width: '45%' }}>
-                <h4 style={{ textAlign: 'center' }}>Total de Números</h4>
-                <Doughnut data={dataTotalNumeros} />
+              <div style={{ width: 380 }}>
+                <h4 style={{ textAlign: 'center', fontSize: 15 }}>Total de Números</h4>
+                <Doughnut data={dataTotalNumeros} options={{ maintainAspectRatio: false, responsive: false }} width={180} height={180} />
               </div>
-              <div style={{ width: '45%' }}>
-                <h4 style={{ textAlign: 'center' }}>Estado Total</h4>
-                <Pie data={dataEstadoTotal} />
+              <div style={{ width: 380 }}>
+                <h4 style={{ textAlign: 'center', fontSize: 15 }}>Estado Total</h4>
+                <Pie data={dataEstadoTotal} options={{ maintainAspectRatio: false, responsive: false }} width={180} height={180} />
               </div>
             </div>
+            
             <button
               onClick={() => setMostrarInforme(false)}
               style={{ marginTop: 20, padding: '6px 16px', backgroundColor: '#888', color: 'white', border: 'none', borderRadius: '4px' }}

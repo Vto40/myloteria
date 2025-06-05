@@ -185,25 +185,42 @@ const Intercambio = () => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-          gap: '10px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(567px, 1fr))', // 567px = 15cm
+          gap: '24px',
+          justifyContent: 'center'
         }}
       >
         {numerosFiltrados.map((numero) => (
           <div
             key={numero._id}
             style={{
-              padding: '10px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              backgroundColor: 'white',
+              width: '567px',
+              height: '284px',
+              maxWidth: '100%',
+              minWidth: 0,
+              minHeight: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'stretch',
+              padding: '18px',
+              border: '1.5px solid #bfa76f',
+              borderRadius: '16px',
+              backgroundColor: '#fffbe6',
+              backgroundImage: 'url("https://www.loteria1benidorm.com/archivos/uploads/decimo-loteria-nacional-electronico.png")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               textAlign: 'center',
               cursor: 'pointer',
               position: 'relative',
+              boxSizing: 'border-box',
+              boxShadow: '0 4px 16px rgba(191,167,111,0.18)',
+              overflow: 'hidden',
+              aspectRatio: '2 / 1',
+              margin: 'auto'
             }}
-            // Cambia el onClick para que solo abra el modal si no se hace click en botones internos
             onClick={e => {
-              // Si el click viene de un botón, textarea o estrella, no abrir modal
               if (
                 e.target.tagName === 'BUTTON' ||
                 e.target.tagName === 'TEXTAREA' ||
@@ -218,94 +235,136 @@ const Intercambio = () => {
               setNumeroOfertado('');
             }}
           >
-            <p>
-              <strong>Número:</strong> {numero.numero}
-            </p>
-            <p>
-              <strong>Propietario:</strong> {numero.propietario.nombre}
-              {' '}
-              <StarRating
-                value={Math.round(valoraciones[numero.propietario._id]?.media || 0)}
-                readOnly
-                starClassName="star-rating-star"
-              />
-              <span style={{ fontSize: 12, color: '#888' }}>
-                ({valoraciones[numero.propietario._id]?.media?.toFixed(2) || '0.00'})
-              </span>
-              <button
-                style={{ marginLeft: 8, fontSize: 12, padding: '2px 8px' }}
-                onClick={e => {
-                  e.stopPropagation();
-                  handleVerComentarios(numero.propietario._id);
-                }}
-              >
-                Ver comentarios
-              </button>
-              <button
-                style={{ marginLeft: 8, fontSize: 12, padding: '2px 8px' }}
-                onClick={e => {
-                  e.stopPropagation();
-                  setValorandoId(numero.propietario._id);
-                }}
-              >
-                Valorar
-              </button>
-            </p>
-            {/* Botón para cancelar si es del usuario */}
+            {/* Botón cancelar como X arriba a la derecha */}
             {usuarioId && numero.propietario && (numero.propietario._id === usuarioId || numero.propietario.id === usuarioId) && (
               <button
                 style={{
                   position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  background: '#e53935',
-                  color: 'white',
+                  top: 10,
+                  right: 14,
+                  background: 'transparent',
+                  color: '#e53935',
                   border: 'none',
-                  borderRadius: 4,
-                  padding: '4px 8px',
+                  borderRadius: '50%',
+                  fontSize: 44, // <-- Más grande
+                  fontWeight: 900,
                   cursor: 'pointer',
-                  fontSize: 12,
+                  zIndex: 2,
+                  lineHeight: 1,
+                  width: 54,    // <-- Más grande
+                  height: 54,   // <-- Más grande
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 1px 4px #bfa76f33'
                 }}
                 onClick={e => {
                   e.stopPropagation();
                   handleCancelarIntercambio(numero);
                 }}
                 title="Cancelar intercambio"
+                aria-label="Cancelar intercambio"
               >
-                Cancelar
+                ×
               </button>
             )}
-            {valorandoId === numero.propietario._id && (
-              <div style={{ marginTop: 8 }}>
-                <StarRating value={miValoracion} onChange={setMiValoracion} />
-                <textarea
-                  placeholder="Comentario (opcional)"
-                  value={miComentario}
-                  onChange={e => setMiComentario(e.target.value)}
-                  style={{ width: '100%', marginTop: 4 }}
-                  rows={2}
-                  onClick={e => e.stopPropagation()}
-                />
+
+            {/* Contenido principal */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+              {/* Número arriba y grande */}
+              <div style={{ marginTop: 0, marginBottom: 12 }}>
+                <span style={{
+                  fontSize: '3.6rem',
+                  fontWeight: 900,
+                  color: '#1a237e',
+                  textShadow: '2px 2px 8px #fffbe6, 0 0 2px #000',
+                  letterSpacing: 4,
+                  background: 'rgba(255,255,255,0.7)',
+                  borderRadius: 8,
+                  padding: '2px 18px',
+                  display: 'inline-block'
+                }}>
+                  {numero.numero}
+                </span>
+              </div>
+              {/* Propietario más ancho y grande */}
+              <div style={{
+                fontSize: '2rem',
+                fontWeight: 700,
+                color: '#222',
+                marginBottom: 10,
+                background: 'rgba(255,255,255,0.7)',
+                borderRadius: 8,
+                padding: '2px 24px',
+                display: 'inline-block',
+                alignSelf: 'center',
+                maxWidth: 340, // Más ancho para dejar espacio a valoraciones y botones
+                minHeight: 48,
+              }}>
+                <div>Propietario:</div>
+                <span style={{
+                  maxWidth: 300,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  verticalAlign: 'middle',
+                  display: 'inline-block'
+                }}>
+                  {numero.propietario.nombre}
+                </span>
+              </div>
+              {/* Valoraciones y botón, siempre visibles y alineados abajo */}
+              <div style={{
+                marginTop: 'auto',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 18
+              }}>
+                {/* Valoraciones */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  background: 'rgba(255,255,255,0.7)',
+                  borderRadius: 8,
+                  padding: '2px 10px',
+                  fontSize: 34 // Aumenta el tamaño de las estrellas
+                }}>
+                  <StarRating
+                    value={Math.round(valoraciones[numero.propietario._id]?.media || 0)}
+                    readOnly
+                    starClassName="star-rating-star"
+                  />
+                  <span style={{ fontSize: 20, color: '#888', fontWeight: 500 }}>
+                    ({valoraciones[numero.propietario._id]?.media?.toFixed(2) || '0.00'})
+                  </span>
+                </div>
+                {/* Botón comentarios */}
                 <button
-                  style={{ marginTop: 4, fontSize: 12, padding: '2px 8px' }}
+                  style={{
+                    fontSize: 18,
+                    padding: '8px 22px',
+                    height: 44,
+                    background: '#fff',
+                    border: '1.5px solid #bfa76f',
+                    borderRadius: 8,
+                    color: '#1a237e',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    boxShadow: '0 1px 4px #bfa76f33'
+                  }}
                   onClick={e => {
                     e.stopPropagation();
-                    handleEnviarValoracion(numero.propietario._id);
+                    handleVerComentarios(numero.propietario._id);
                   }}
                 >
-                  Enviar valoración
-                </button>
-                <button
-                  style={{ marginLeft: 8, fontSize: 12, padding: '2px 8px' }}
-                  onClick={e => {
-                    e.stopPropagation();
-                    setValorandoId(null);
-                  }}
-                >
-                  Cancelar
+                  Ver comentarios
                 </button>
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>

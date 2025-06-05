@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 const Login = ({ setToken }) => {
   const [correo, setCorreo] = useState('');
   const [contraseña, setContraseña] = useState('');
+  const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setMensaje('');
     try {
       const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
@@ -16,16 +18,30 @@ const Login = ({ setToken }) => {
         },
         body: JSON.stringify({ correo, contraseña }),
       });
-      if (!response.ok) {
-        throw new Error('Error en la respuesta del servidor');
-      }
+
       const data = await response.json();
-      localStorage.setItem('token', data.token);
-      setToken(data.token); // Actualiza el estado global del token
-      navigate('/coleccion');
+
+      if (!response.ok) {
+        // Muestra el mensaje del backend si existe
+        setMensaje(data.mensaje || 'Error al iniciar sesión.');
+        return;
+      }
+
+      if (data && data.token) {
+        if (data.usuario?.baneado) {
+          setMensaje('Tu cuenta ha sido baneada. Ponte en contacto con administración.');
+          localStorage.removeItem('token');
+          return;
+        }
+        localStorage.setItem('token', data.token);
+        setToken(data.token); // Actualiza el estado global del token
+        navigate('/coleccion');
+      } else {
+        setMensaje('Credenciales incorrectas.');
+      }
     } catch (error) {
+      setMensaje('Error al iniciar sesión.');
       console.error('Error al iniciar sesión', error);
-      alert(error.response?.data?.mensaje || 'Correo o contraseña incorrectos');
     }
   };
 
@@ -129,6 +145,11 @@ const Login = ({ setToken }) => {
         >
           ¿Olvidaste tu contraseña?
         </button>
+        {mensaje && (
+          <div style={{ marginTop: '10px', color: 'red', textAlign: 'center' }}>
+            {mensaje}
+          </div>
+        )}
       </div>
     </div>
   );
