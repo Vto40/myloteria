@@ -395,10 +395,14 @@ const Collection = () => {
                         padding: '10px',
                         textAlign: 'center',
                         fontSize: '14px',
-                        cursor: 'pointer',
+                        cursor: numeroObj ? 'pointer' : 'default',
                         backgroundColor: esBuscado ? 'yellow' : 'transparent',
                       }}
-                      onClick={() => setNumeroSeleccionado(numeroObj)}
+                      onClick={() => {
+                        if (numeroObj) {
+                          setNumeroSeleccionado(numeroObj);
+                        }
+                      }}
                     >
                       {numeroObj !== undefined ? numeroObj.numero.toString().padStart(5, '0') : ''}
                     </td>

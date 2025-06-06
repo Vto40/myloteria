@@ -38,6 +38,7 @@ const Intercambio = () => {
   const [valorandoId, setValorandoId] = useState(null);
   const [miValoracion, setMiValoracion] = useState(0);
   const [miComentario, setMiComentario] = useState('');
+  const [ordenNumeros, setOrdenNumeros] = useState('asc'); // Estado para el orden de números
 
   useEffect(() => {
     const fetchNumerosDisponibles = async () => {
@@ -137,6 +138,17 @@ const Intercambio = () => {
     setValoraciones(v => ({ ...v, [usuarioId]: res.data }));
   };
 
+  const ordenarNumeros = () => {
+    const numerosOrdenados = [...numerosFiltrados].sort((a, b) => {
+      if (ordenNumeros === 'asc') {
+        return a.numero - b.numero; // Ordenar de menor a mayor
+      } else {
+        return b.numero - a.numero; // Ordenar de mayor a menor
+      }
+    });
+    setNumerosFiltrados(numerosOrdenados);
+  };
+
   return (
     <div
       style={{
@@ -147,7 +159,15 @@ const Intercambio = () => {
     >
       <h2 style={{ textAlign: 'center' }}>Números Disponibles para Intercambio</h2>
 
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '10px', // Espaciado entre el buscador y el botón
+          marginBottom: '20px',
+        }}
+      >
         <input
           type="text"
           placeholder="Buscar número..."
@@ -180,6 +200,24 @@ const Intercambio = () => {
             fontSize: '16px',
           }}
         />
+
+        <button
+          onClick={() => {
+            setOrdenNumeros(ordenNumeros === 'asc' ? 'desc' : 'asc');
+            ordenarNumeros();
+          }}
+          style={{
+            padding: '10px 20px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            backgroundColor: '#1976d2',
+            color: 'white',
+            fontSize: '16px',
+            cursor: 'pointer',
+          }}
+        >
+          Ordenar números ({ordenNumeros === 'asc' ? 'Ascendente' : 'Descendente'})
+        </button>
       </div>
 
       <div

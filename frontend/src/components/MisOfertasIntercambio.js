@@ -53,20 +53,22 @@ const MisOfertasIntercambio = () => {
   }, []);
 
   useEffect(() => {
-    // Cargar valoraciones hechas por el usuario en intercambios aceptados
     const fetchValoraciones = async () => {
       try {
         const token = localStorage.getItem('token');
         const res = await api.get('/valoraciones/mis-valoraciones', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // Guardar ids de usuario_valorado para los que ya valoró
+
+        // Guardar las valoraciones hechas en un formato más específico
         const hechas = {};
-        res.data.forEach(v => {
-          hechas[v.intercambio] = true;
+        res.data.forEach((v) => {
+          hechas[`${v.intercambio}-${v.usuario_valorador}`] = true;
         });
         setValoracionesHechas(hechas);
-      } catch {}
+      } catch (error) {
+        console.error('Error al cargar las valoraciones:', error);
+      }
     };
     fetchValoraciones();
   }, [ofertas]);
@@ -87,26 +89,34 @@ const MisOfertasIntercambio = () => {
     }
   };
 
-  // Nueva función para enviar valoración
+  // Función para enviar valoración
   const handleEnviarValoracion = async (oferta, usuarioAValorarId) => {
     if (!miValoracion) return;
     try {
       const token = localStorage.getItem('token');
-      await api.post('/valoraciones', {
-        usuario_valorado: usuarioAValorarId,
-        estrellas: miValoracion,
-        comentario: miComentario,
-        intercambio: oferta._id
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post(
+        '/valoraciones',
+        {
+          usuario_valorado: usuarioAValorarId,
+          estrellas: miValoracion,
+          comentario: miComentario,
+          intercambio: oferta._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setMiValoracion(0);
       setMiComentario('');
       setValorandoId(null);
-      setValoracionesHechas(v => ({ ...v, [oferta._id]: true }));
+      setValoracionesHechas((v) => ({ ...v, [`${oferta._id}-${usuarioId}`]: true }));
       alert('¡Valoración enviada!');
-    } catch {
-      alert('Error al enviar la valoración');
+    } catch (error) {
+      if (error.response?.status === 400) {
+        alert(error.response.data.mensaje); // Mensaje del backend
+      } else {
+        alert('Error al enviar la valoración');
+      }
     }
   };
 
@@ -179,30 +189,23 @@ const MisOfertasIntercambio = () => {
             </thead>
             <tbody>
               {lista.map((oferta) => {
-                // Determinar si el usuario puede valorar y a quién
                 let puedeValorar = false;
                 let usuarioAValorar = null;
+
                 if (
                   oferta.estado === 'aceptada' &&
-                  !valoracionesHechas[oferta._id]
+                  !valoracionesHechas[`${oferta._id}-${usuarioId}`] && // Verifica si el usuario ya valoró
+                  (usuarioId === oferta.usuario_Origen?._id || usuarioId === oferta.usuario_Destino?._id) // Verifica si el usuario es origen o destino
                 ) {
-                  if (usuarioId === oferta.usuario_Origen?._id) {
-                    puedeValorar = true;
-                    usuarioAValorar = oferta.usuario_Destino?._id;
-                  } else if (usuarioId === oferta.usuario_Destino?._id) {
-                    puedeValorar = true;
-                    usuarioAValorar = oferta.usuario_Origen?._id;
-                  }
+                  puedeValorar = true;
+                  usuarioAValorar =
+                    usuarioId === oferta.usuario_Origen?._id
+                      ? oferta.usuario_Destino?._id
+                      : oferta.usuario_Origen?._id;
                 }
+
                 return (
-                  <tr
-                    key={oferta._id}
-                    style={{
-                      background: 'white',
-                      textAlign: 'center',
-                      borderBottom: '1px solid #eee'
-                    }}
-                  >
+                  <tr key={oferta._id}>
                     <td style={{ padding: 8 }}>{oferta.decimo_Ofertado}</td>
                     <td style={{ padding: 8 }}>{oferta.decimo_Solicitado}</td>
                     <td style={{ padding: 8 }}>{oferta.usuario_Origen?.nombre || '-'}</td>
@@ -212,13 +215,26 @@ const MisOfertasIntercambio = () => {
                       {oferta.estado === 'solicitada' && usuarioId === oferta.usuario_Destino?._id && (
                         <>
                           <button
-                            style={{ marginRight: 8, background: 'green', color: 'white', border: 'none', padding: '4px 10px', borderRadius: 4 }}
+                            style={{
+                              marginRight: 8,
+                              background: 'green',
+                              color: 'white',
+                              border: 'none',
+                              padding: '4px 10px',
+                              borderRadius: 4,
+                            }}
                             onClick={() => actualizarEstado(oferta._id, 'aceptar')}
                           >
                             Aceptar
                           </button>
                           <button
-                            style={{ background: 'red', color: 'white', border: 'none', padding: '4px 10px', borderRadius: 4 }}
+                            style={{
+                              background: 'red',
+                              color: 'white',
+                              border: 'none',
+                              padding: '4px 10px',
+                              borderRadius: 4,
+                            }}
                             onClick={() => actualizarEstado(oferta._id, 'rechazar')}
                           >
                             Rechazar
@@ -227,7 +243,13 @@ const MisOfertasIntercambio = () => {
                       )}
                       {oferta.estado === 'solicitada' && usuarioId === oferta.usuario_Origen?._id && (
                         <button
-                          style={{ background: 'gray', color: 'white', border: 'none', padding: '4px 10px', borderRadius: 4 }}
+                          style={{
+                            background: 'gray',
+                            color: 'white',
+                            border: 'none',
+                            padding: '4px 10px',
+                            borderRadius: 4,
+                          }}
                           onClick={() => actualizarEstado(oferta._id, 'cancelar')}
                         >
                           Cancelar
@@ -242,7 +264,7 @@ const MisOfertasIntercambio = () => {
                             <textarea
                               placeholder="Comentario (opcional)"
                               value={miComentario}
-                              onChange={e => setMiComentario(e.target.value)}
+                              onChange={(e) => setMiComentario(e.target.value)}
                               style={{ width: '100%', marginTop: 4 }}
                               rows={2}
                             />
@@ -267,8 +289,10 @@ const MisOfertasIntercambio = () => {
                             Valorar
                           </button>
                         )
+                      ) : valoracionesHechas[`${oferta._id}-${usuarioId}`] ? (
+                        'Valorado'
                       ) : (
-                        valoracionesHechas[oferta._id] ? 'Valorado' : '-'
+                        '-'
                       )}
                     </td>
                   </tr>
