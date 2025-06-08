@@ -16,7 +16,7 @@ const perfilSchema = new mongoose.Schema({
 perfilSchema.pre('save', async function (next) {
   if (!this.isModified('usuario_ID')) return next();
 
-  // Popula el usuario para obtener el email
+  // Prueba el usuario para obtener el email
   await this.populate('usuario_ID');
   if (this.usuario_ID.correo === 'myloterianacional@gmail.com') {
     this.esAdministrador = true;
