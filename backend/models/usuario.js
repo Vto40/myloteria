@@ -40,6 +40,10 @@ const usuarioSchema = new mongoose.Schema({
   },
 });
 
+// Crear índices
+//usuarioSchema.index({ correo: 1 }); // Índice para consultas rápidas por correo
+//Para luego usarlo: db.usuarios.getIndexes()
+
 // Middleware para hashear la contraseña solo si es nueva o modificada
 usuarioSchema.pre('save', async function (next) {
   if (!this.isModified('contraseña')) return next();
