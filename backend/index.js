@@ -6,7 +6,7 @@ const coleccionRoutes = require('./routes/coleccion'); // Importa las rutas de c
 const authRoutes = require('./routes/auth'); // Importa las rutas de autenticación
 const usuariosRoutes = require('./routes/usuarios'); // Importa las rutas de usuarios
 const intercambiosRoutes = require('./routes/intercambios'); // Importa las rutas de intercambio
-const valoracionesRouter = require('./routes/valoraciones');
+const valoracionesRouter = require('./routes/valoraciones'); // Importa las rutas de valoraciones
 const anunciosRoutes = require('./routes/anuncios'); // Importa las rutas de anuncios
 
 const app = express();
