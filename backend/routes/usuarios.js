@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const verificarToken = require('../middleware/verificarToken'); // Usa el nombre correcto
+const verificarToken = require('../middleware/verificarToken'); 
 const Usuario = require('../models/usuario');
 const Log = require('../models/log');
 const multer = require('multer');

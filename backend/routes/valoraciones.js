@@ -15,6 +15,11 @@ router.post('/', verificarToken, async (req, res) => {
   try {
     const { usuario_valorado, intercambio } = req.body;
 
+    // Validar que el ID de intercambio tenga formato correcto
+    if (!intercambio || !intercambio.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ mensaje: 'ID de intercambio inválido o no proporcionado.' });
+    }
+
     // Verificar si el usuario ya valoró este intercambio
     const valoracionExistente = await Valoracion.findOne({
       usuario_valorador: req.usuario.id,
@@ -25,12 +30,13 @@ router.post('/', verificarToken, async (req, res) => {
       return res.status(400).json({ mensaje: 'Ya has valorado este intercambio.' });
     }
 
-    // Verificar si el usuario está autorizado para valorar (origen o destino del intercambio)
+    // Verificar si el intercambio existe
     const intercambioObj = await Intercambio.findById(intercambio);
     if (!intercambioObj) {
-      return res.status(404).json({ mensaje: 'Intercambio no encontrado.' });
+      return res.status(404).json({ mensaje: `Intercambio no encontrado. ID recibido: ${intercambio}` });
     }
 
+    // Verificar si el usuario está autorizado para valorar (origen o destino del intercambio)
     if (
       intercambioObj.usuario_Origen.toString() !== req.usuario.id &&
       intercambioObj.usuario_Destino.toString() !== req.usuario.id
@@ -94,6 +100,18 @@ router.get('/mis-valoraciones', verificarToken, async (req, res) => {
     res.json(valoraciones);
   } catch (error) {
     console.error('Error al obtener las valoraciones:', error);
+    res.status(500).json({ mensaje: 'Error al obtener las valoraciones.' });
+  }
+});
+
+// Obtener todas las valoraciones de un usuario por su ID
+router.get('/:usuarioId', async (req, res) => {
+  try {
+    const usuarioId = req.params.usuarioId;
+    const valoraciones = await Valoracion.find({ usuario_valorado: usuarioId })
+      .populate('usuario_valorador', 'nombre');
+    res.json(valoraciones);
+  } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener las valoraciones.' });
   }
 });

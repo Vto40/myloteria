@@ -1,15 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const coleccionRoutes = require('./routes/coleccion'); // Importa las rutas de colección
 const authRoutes = require('./routes/auth'); // Importa las rutas de autenticación
 const usuariosRoutes = require('./routes/usuarios'); // Importa las rutas de usuarios
 const intercambiosRoutes = require('./routes/intercambios'); // Importa las rutas de intercambio
 const valoracionesRouter = require('./routes/valoraciones');
 const anunciosRoutes = require('./routes/anuncios'); // Importa las rutas de anuncios
-
-dotenv.config();  // Configura las variables de entorno
 
 const app = express();
 
@@ -36,12 +34,13 @@ app.use('/api/valoraciones', valoracionesRouter); // Registra las rutas de valor
 app.use('/api/anuncios', anunciosRoutes); // Registra las rutas de anuncios
 
 // Conexión a la base de datos
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch((err) => console.error('Error al conectar con MongoDB:', err));
+mongoose.connect(process.env.MONGODB_URI);
+// , {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+//   .then(() => console.log('Conectado a MongoDB'))
+//   .catch((err) => console.error('Error al conectar con MongoDB:', err));
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
