@@ -24,7 +24,7 @@ router.post('/registro', async (req, res) => {
     // Crear un nuevo usuario
     const nuevoUsuario = new Usuario({ nombre, correo, contraseña, direccion });
 
-    // Guardar el usuario en la base de datos (el middleware `pre('save')` encripta la contraseña)
+    // Guardar el usuario en la base de datos (el middleware encripta la contraseña)
     await nuevoUsuario.save();
 
     res.status(201).json({ mensaje: 'Usuario registrado con éxito' });
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ mensaje: 'Correo o contraseña incorrectos' });
     }
 
-    // Nueva verificación: ¿está baneado?
+    // Nueva verificación, si el usuario está baneado o no
     if (usuario.baneado) {
       return res.status(403).json({ mensaje: 'Tu cuenta ha sido baneada. Ponte en contacto con administración.' });
     }
