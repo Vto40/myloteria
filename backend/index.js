@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware
 app.use(express.json()); // Para manejar el cuerpo de las solicitudes como JSON
-app.use(cors()); // Si necesitas habilitar CORS
+app.use(cors()); // Para habilitar CORS
 
 // Rutas de autenticación
 app.use('/api/auth', authRoutes); // Registra las rutas de autenticación
