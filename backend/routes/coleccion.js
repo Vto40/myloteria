@@ -6,7 +6,7 @@ const Usuario = require('../models/usuario');
 const enviarCorreo = require('../utils/mailer');
 const router = express.Router();
 
-// Cambia este valor por el total real de números posibles en la colección
+// Cambia este valor por el total real de números posibles en la colección, nuestro caso 100.000
 const TOTAL_NUMEROS = 100000;
 
 router.get('/', verificarToken, async (req, res) => {
