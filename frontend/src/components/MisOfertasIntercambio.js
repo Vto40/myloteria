@@ -37,7 +37,7 @@ const MisOfertasIntercambio = () => {
     const fetchOfertas = async () => {
       try {
         const token = localStorage.getItem('token');
-        // Decodifica el token para obtener el id del usuario (puedes usar jwt-decode)
+        // Decodifica el token para obtener el id del usuario
         const payload = JSON.parse(atob(token.split('.')[1]));
         setUsuarioId(payload.id || payload._id);
 
