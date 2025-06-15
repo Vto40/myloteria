@@ -88,10 +88,10 @@ Es un desarrollo de una aplicación web para coleccionistas de décimos de loter
 
 La pagina principal de la aplicación es la siguiente:
 
-![Login](https://github.com/Vto40/myloteria/blob/main/adicional/Imagenes%20Github/Home.png?raw=true)
+![Login](https://github.com/Vto40/myloteria/blob/main/adicional/Imagenes%20Github/Home.png)
 
 
 ### Licenciamiento
 
-![Licencia](https://github.com/Vto40/myloteria/blob/main/adicional/Imagenes%20Github/licencias-creative-commons-04.png?raw=true)
+![Licencia](https://github.com/Vto40/myloteria/blob/main/adicional/Imagenes%20Github/licencias-creative-commons-04.png)
 
