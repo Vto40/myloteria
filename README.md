@@ -9,7 +9,7 @@ Desarrollo MERN Stack que implementa una **Aplicación web para los coleccionist
 
 ### MERN Stack
 MongoDB, Expressjs, React, Nodejs
-> MERN es una implementaci¨®n fullstack en MongoDB, Expressjs, React, Nodejs.
+> MERN es una implementación fullstack en MongoDB, Expressjs, React, Nodejs.
 
 ### Estructura del proyecto
 ```terminal
