@@ -40,6 +40,9 @@ const Home = () => {
         }}
       >
         <h1 style={{ fontSize: '4rem', marginBottom: '0rem' }}>
+          MYLOTERIA
+        </h1>
+        <h1 style={{ fontSize: '4rem', marginBottom: '0rem' }}>
           Bienvenido a la web de coleccionistas de lotería
         </h1>
         <p style={{ fontSize: '3rem' }}>
