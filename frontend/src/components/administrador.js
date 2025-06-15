@@ -89,7 +89,6 @@ const Administrador = () => {
       }
     };
     checkAdmin();
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
