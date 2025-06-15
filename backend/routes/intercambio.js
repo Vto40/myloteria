@@ -2,10 +2,10 @@ const express = require('express');
 const verificarToken = require('../../middleware/verificarToken');  // Importa el middleware
 const router = express.Router();
 
-// Esta ruta estará protegida por el middleware verificarToken
+// Esta ruta está protegida por el middleware verificarToken
 router.get('/coleccion', verificarToken, async (req, res) => {
   try {
-    // Aquí deberías obtener la colección del usuario a partir de su ID
+    // Obtener la colección del usuario a partir de su ID
     const coleccion = await Coleccion.find({ usuarioId: req.usuarioId });
 
     if (!coleccion) {
