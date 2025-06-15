@@ -33,7 +33,7 @@ Tenga en cuenta que necesita que el cliente y el servidor se ejecuten simultáne
 Con un software de gestión de BBDD MongoDB como:
 - [MongoDB Compass](https://www.mongodb.com/try/download/compass)
 
-Crear nueva conexi¨®n: *mongodb://localhost:27017*
+Crear nueva conexión: *mongodb://localhost:27017*
 
 
 ### Uso de los endpoints a través de postman
