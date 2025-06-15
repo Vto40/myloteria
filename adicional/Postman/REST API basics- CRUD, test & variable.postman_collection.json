@@ -1,0 +1,965 @@
+{
+	"info": {
+		"_postman_id": "f97afaa2-ccda-4d3e-bbac-37462f02df0b",
+		"name": "REST API basics: CRUD, test & variable",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45876261"
+	},
+	"item": [
+		{
+			"name": "Registrar usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"correo\": \"juan@example.com\",\n  \"contraseña\": \"12345678\",\n  \"direccion\": \"Calle Falsa 123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth/registro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"registro"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Datos perfil usuario",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NGQ2MDA4ZGMxOGIwZDUzMWI2YjFlZCIsImlhdCI6MTc0OTkwMTQ3MywiZXhwIjoxNzQ5OTA1MDczfQ.PW2BMjugBV24bLCtRYBU5SiODMHKK_V0HAJryStOsec",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/perfil",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"perfil"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar datos ususario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NGQ2MDA4ZGMxOGIwZDUzMWI2YjFlZCIsImlhdCI6MTc0OTkwMTQ3MywiZXhwIjoxNzQ5OTA1MDczfQ.PW2BMjugBV24bLCtRYBU5SiODMHKK_V0HAJryStOsec",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Juan Actualizado2\",\r\n  \"correo\": \"juan@example.com\",\r\n  \"direccion\": \"Nueva dirección\",\r\n  \"contraseña\": \"15454564\",\r\n  \"contraseñaActual\": \"nuevaPassword12322\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/684d6008dc18b0d531b6b1ed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"684d6008dc18b0d531b6b1ed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNDcyNywiZXhwIjoxNzQ5OTE4MzI3fQ.P8mOThmjLlk5fLDiqDEMGIidEJJY3VLebpwVla8uerU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"correo\": \"vglecumberri@gmail.com\",\r\n  \"contraseña\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6841bb03025f31196299e7b4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6841bb03025f31196299e7b4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login administrador",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"correo\": \"myloterianacional@gmail.com\",\r\n  \"contraseña\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperar contraseña",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"correo\": \"garcivictor@hotmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/recuperar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"recuperar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado usuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Banear usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6834a885abb7f3701da2c0e1/banear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6834a885abb7f3701da2c0e1",
+						"banear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Desbanear usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6834a885abb7f3701da2c0e1/desbanear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6834a885abb7f3701da2c0e1",
+						"desbanear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hacer administrador",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6834a885abb7f3701da2c0e1/hacer-administrador",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6834a885abb7f3701da2c0e1",
+						"hacer-administrador"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Quitar administrador",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6834a885abb7f3701da2c0e1/quitar-administrador",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6834a885abb7f3701da2c0e1",
+						"quitar-administrador"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Detalle usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6834a885abb7f3701da2c0e1/detalle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6834a885abb7f3701da2c0e1",
+						"detalle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar numero coleccion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6836af2d3a488c811f1f6e8d/coleccion/683f255e860c97077242d72a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6836af2d3a488c811f1f6e8d",
+						"coleccion",
+						"683f255e860c97077242d72a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar intercambio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6834a870abb7f3701da2c0de/intercambio/6836e10f450838e2b4a29cc0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6834a870abb7f3701da2c0de",
+						"intercambio",
+						"6836e10f450838e2b4a29cc0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar valoracion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkwNDkyMywiZXhwIjoxNzQ5OTA4NTIzfQ.zzy9KT61jkTxP-SEP6r3ZcG659rM9p1Dw39A5Z5WOZ0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/6836af2d3a488c811f1f6e8d/valoracion/6841bea45a1efeb8beed0d0e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"6836af2d3a488c811f1f6e8d",
+						"valoracion",
+						"6841bea45a1efeb8beed0d0e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear intercambio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNDcyNywiZXhwIjoxNzQ5OTE4MzI3fQ.P8mOThmjLlk5fLDiqDEMGIidEJJY3VLebpwVla8uerU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuario_Origen\": \"6836af2d3a488c811f1f6e8d\",\r\n  \"usuario_Destino\": \"6834a870abb7f3701da2c0de\",\r\n  \"decimo_Ofertado\": \"00005\",\r\n  \"decimo_Solicitado\": \"11111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/intercambio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"intercambio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado intercambios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNDcyNywiZXhwIjoxNzQ5OTE4MzI3fQ.P8mOThmjLlk5fLDiqDEMGIidEJJY3VLebpwVla8uerU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/intercambio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"intercambio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar estado intercambio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"estado\": \"aceptada\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/intercambio/684d7605dc18b0d531b6b298",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"intercambio",
+						"684d7605dc18b0d531b6b298"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar intercambio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/intercambio/684d7d87dc18b0d531b6b325",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"intercambio",
+						"684d7d87dc18b0d531b6b325"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener coleccion de ususario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/coleccion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"coleccion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar numero a coleccion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"numero\": \"20202\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/coleccion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"coleccion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar numero de coleccion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/coleccion/684d9c42176b443f47eb2657",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"coleccion",
+						"684d9c42176b443f47eb2657"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear valoracion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuario_valorado\": \"6834a870abb7f3701da2c0de\",\r\n  \"estrellas\": 5,\r\n  \"intercambio\": \"684d7605dc18b0d531b6b298\",\r\n  \"comentario\": \"Excelente trato\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/valoraciones",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"valoraciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener mis valoraciones",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhZjJkM2E0ODhjODExZjFmNmU4ZCIsImlhdCI6MTc0OTkxNTY4OSwiZXhwIjoxNzQ5OTE5Mjg5fQ.lYPzTGZWRhXw7d3fSStL-FVIQKClc9Jgoz6bdaiTbEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/valoraciones/mis-valoraciones",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"valoraciones",
+						"mis-valoraciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear anuncio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2YyNzYzODYwYzk3MDc3MjQyZDc1MSIsImlhdCI6MTc0OTkxOTU5NiwiZXhwIjoxNzQ5OTIzMTk2fQ.r2lCF9L2brbOroCvFgslfvwE8EFCvDOxBYIZoyAdMYg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"titulo\": \"Vendo décimo 12345\",\r\n  \"descripcion\": \"En perfecto estado\",\r\n  \"precio\": 20,\r\n  \"mensaje\": \"Vamos que ya casi tenemos la coleccion\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/anuncios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"anuncios"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
