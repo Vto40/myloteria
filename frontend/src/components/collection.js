@@ -135,6 +135,7 @@ const Collection = () => {
     }
   };
 
+  // Posibilidad para un futuro, marcar decimos como deseados
   // const handleMarcarDeseado = async (numero) => {
   //   try {
   //     await api.post(
