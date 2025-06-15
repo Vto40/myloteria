@@ -248,17 +248,22 @@ const Collection = () => {
 
   const generarPDF = async () => {
     const doc = new jsPDF();
+    doc.setFontSize(26);
+    doc.text('MYLOTERIA', 100, 15,  { align: 'center' }   ); // Centrado del título
     doc.setFontSize(16);
-    doc.text('Informe de la Colección', 10, 15);
-
+    
+    doc.text('Informe de la Colección del 00000 al 99999', 10, 35);
+    let y = 55;
     doc.setFontSize(12);
-    let y = 30;
-    doc.text(`Total de números en la colección: ${coleccion.length}`, 10, y); y += 8;
-    doc.text(`Números faltantes: ${faltantes.length}`, 10, y); y += 8;
-    doc.text(`Números capicúas: ${capicuas.length}`, 10, y); y += 8;
-    doc.text(`Números pares: ${pares.length}`, 10, y); y += 8;
-    doc.text(`Números impares: ${impares.length}`, 10, y); y += 8;
-    doc.text(`Números disponibles para intercambio: ${intercambio.length}`, 10, y); y += 8;
+    doc.text(`- Fecha: ${new Date().toLocaleDateString()}`, 10, y); y += 12;
+    doc.text(`- Total de números en la colección: ${coleccion.length}`, 10, y); y += 12;
+    doc.text(`- Números faltantes: ${faltantes.length}`, 10, y); y += 12;
+    doc.text(`- Números capicúas: ${capicuas.length}`, 10, y); y += 12;
+    doc.text(`- Números pares: ${pares.length}`, 10, y); y += 12;
+    doc.text(`- Números impares: ${impares.length}`, 10, y); y += 12;
+    doc.text(`- Números disponibles para intercambio: ${intercambio.length}`, 10, y); y += 12;
+
+
 
     // Captura los gráficos y añádelos al PDF
     const chartDiv = document.getElementById('graficos-pdf');
@@ -267,8 +272,8 @@ const Collection = () => {
       const imgData = canvas.toDataURL('image/png');
       doc.addPage();
       doc.setFontSize(14);
-      doc.text('Gráficos de la colección', 10, 15);
-      doc.addImage(imgData, 'PNG', 10, 25, 180, 90);
+      doc.text('Gráfico de la colección', 10, 15);
+      doc.addImage(imgData, 'PNG', 10, 25, 380, 90);
     }
 
     doc.save('informe-coleccion.pdf');
