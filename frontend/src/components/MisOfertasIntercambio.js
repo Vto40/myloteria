@@ -178,13 +178,13 @@ const MisOfertasIntercambio = () => {
           >
             <thead>
               <tr>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Ofertado</th>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Solicitado</th>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Origen</th>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Destino</th>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Estado</th>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Acción</th>
-                <th style={{ textAlign: 'center', background: 'white', color: '#333', padding: 10 }}>Valoración</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Ofertado</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Solicitado</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Origen</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Destino</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Estado</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Acción</th>
+                <th style={{ textAlign: 'left', background: 'white', color: '#333', padding: 10 }}>Valoración</th>
               </tr>
             </thead>
             <tbody>
