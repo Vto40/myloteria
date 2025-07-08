@@ -21,6 +21,7 @@ const Collection = () => {
   const [rangoFin, setRangoFin] = useState('');
   const [coleccionFiltrada, setColeccionFiltrada] = useState([]);
   const [mostrarInforme, setMostrarInforme] = useState(false);
+  const [usuario, setUsuario] = useState({ nombre: '', correo: '' });
   const token = localStorage.getItem('token');
 
   // Función para obtener la colección desde la API
@@ -52,6 +53,24 @@ const Collection = () => {
       fetchColeccion();
     }
   }, [token, orden, fetchColeccion]);
+
+  // Obtener datos del usuario autenticado
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      try {
+        const response = await api.get('/usuarios/perfil', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsuario({
+          nombre: response.data.nombre,
+          correo: response.data.correo,
+        });
+      } catch (error) {
+        console.error('Error al obtener el usuario', error);
+      }
+    };
+    if (token) fetchUsuario();
+  }, [token]);
 
   const handleAddNumero = async (e) => {
     e.preventDefault();
@@ -249,12 +268,14 @@ const Collection = () => {
   const generarPDF = async () => {
     const doc = new jsPDF();
     doc.setFontSize(26);
-    doc.text('MYLOTERIA', 100, 15,  { align: 'center' }   ); // Centrado del título
+    doc.text('MYLOTERIA', 100, 15,  { align: 'center' }   ); 
     doc.setFontSize(16);
     
     doc.text('Informe de la Colección del 00000 al 99999', 10, 35);
     let y = 55;
     doc.setFontSize(12);
+    doc.text(`- Usuario: ${usuario.nombre || 'Desconocido'}`, 10, y); y += 12;
+    doc.text(`- Email: ${usuario.correo || 'Desconocido'}`, 10, y); y += 12;
     doc.text(`- Fecha: ${new Date().toLocaleDateString()}`, 10, y); y += 12;
     doc.text(`- Total de números en la colección: ${coleccion.length}`, 10, y); y += 12;
     doc.text(`- Números faltantes: ${faltantes.length}`, 10, y); y += 12;
@@ -473,6 +494,10 @@ const Collection = () => {
         }}>
           <div style={{ background: 'white', padding: 30, borderRadius: 8, maxWidth: 600, width: '90%' }}>
             <h2>Informe de la Colección</h2>
+            <div style={{ marginBottom: 10 }}>
+              <b>Usuario:</b> {usuario.nombre} <br />
+              <b>Email:</b> {usuario.correo}
+            </div>
             <ul>
               <li><b>Total de números en la colección:</b> {coleccion.length}</li>
               <li><b>Números faltantes:</b> {faltantes.length}</li>
